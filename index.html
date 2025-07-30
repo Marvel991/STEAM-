@@ -371,129 +371,191 @@
         .hidden {
             display: none;
         }
+
+        /* Login Styles */
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .login-container h1 {
+            color: #2a5a2a;
+            margin-bottom: 20px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .login-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        .login-btn {
+            background-color: #2a5a2a;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .login-btn:hover {
+            background-color: #1e3f1e;
+        }
+        
+        .login-error {
+            color: #d9534f;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <!-- POS Interface -->
-    <div id="pos-interface" class="pos-container">
-        <header>
-            <h1>Matcha MOAMI</h1>
-            <div class="datetime" id="datetime"></div>
-        </header>
-
-        <div class="main-content">
-            <section class="products">
-                <h2>Our Matcha Selection</h2>
-                <div class="product-grid" id="product-grid">
-                    <!-- Products will be loaded here -->
-                </div>
-            </section>
-
-            <section class="cart">
-                <h2>Current Order</h2>
-                <div class="cart-items" id="cart-items">
-                    <!-- Cart items will appear here -->
-                </div>
-                <div class="cart-total">
-                    <span>Total:</span>
-                    <span id="cart-total">IDR 0</span>
-                </div>
-                <button id="checkout-btn" class="btn checkout-btn">Checkout</button>
-                <button id="admin-btn" class="btn admin-btn">Admin Panel</button>
-            </section>
-        </div>
-
-        <!-- Receipt Modal -->
-        <div id="receipt-modal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <div id="receipt-content">
-                    <!-- Receipt will be generated here -->
-                </div>
-                <button id="print-receipt" class="btn">Print Receipt</button>
-            </div>
-        </div>
+    <!-- Login Interface -->
+    <div id="login-interface" class="login-container">
+        <h1>Matcha MOAMI</h1>
+        <h2>POS Login</h2>
+        <form id="login-form" class="login-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <div id="login-error" class="login-error"></div>
     </div>
 
-    <!-- Admin Interface -->
-    <div id="admin-interface" class="admin-container hidden">
-        <header>
-            <h1>Matcha MOAMI - Admin Panel</h1>
-            <button id="back-to-pos" class="btn back-btn">Back to POS</button>
-        </header>
+    <!-- Main Application Interface (hidden until login) -->
+    <div id="app-interface" class="hidden">
+        <!-- POS Interface -->
+        <div id="pos-interface" class="pos-container">
+            <header>
+                <h1>Matcha MOAMI</h1>
+                <div class="datetime" id="datetime"></div>
+            </header>
 
-        <div class="admin-tabs">
-            <button class="tab-btn active" data-tab="products">Products</button>
-            <button class="tab-btn" data-tab="sales">Sales History</button>
-            <button class="tab-btn" data-tab="system">System</button>
-        </div>
-
-        <div class="tab-content active" id="products-tab">
-            <h2>Product Management</h2>
-            <div class="product-management">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Price (IDR)</th>
-                            <th>Stock</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="product-list">
+            <div class="main-content">
+                <section class="products">
+                    <h2>Our Matcha Selection</h2>
+                    <div class="product-grid" id="product-grid">
                         <!-- Products will be loaded here -->
-                    </tbody>
-                </table>
-                <button id="add-product" class="btn">Add Product</button>
+                    </div>
+                </section>
+
+                <section class="cart">
+                    <h2>Current Order</h2>
+                    <div class="cart-items" id="cart-items">
+                        <!-- Cart items will appear here -->
+                    </div>
+                    <div class="cart-total">
+                        <span>Total:</span>
+                        <span id="cart-total">IDR 0</span>
+                    </div>
+                    <button id="checkout-btn" class="btn checkout-btn">Checkout</button>
+                    <button id="admin-btn" class="btn admin-btn hidden">Admin Panel</button>
+                </section>
+            </div>
+
+            <!-- Receipt Modal -->
+            <div id="receipt-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div id="receipt-content">
+                        <!-- Receipt will be generated here -->
+                    </div>
+                    <button id="print-receipt" class="btn">Print Receipt</button>
+                </div>
             </div>
         </div>
 
-        <div class="tab-content" id="sales-tab">
-            <h2>Sales History</h2>
-            <div class="sales-filters">
-                <div class="filter-group">
-                    <label for="date-from">From:</label>
-                    <input type="date" id="date-from">
-                </div>
-                <div class="filter-group">
-                    <label for="date-to">To:</label>
-                    <input type="date" id="date-to">
-                </div>
-                <div class="filter-group">
-                    <label for="product-filter">Product:</label>
-                    <select id="product-filter">
-                        <option value="all">All Products</option>
-                        <!-- Product options will be added here -->
-                    </select>
-                </div>
-                <button id="apply-filters" class="btn">Apply Filters</button>
-                <button id="reset-filters" class="btn">Reset</button>
-                <button id="export-sales" class="btn export-btn">Export Sales History</button>
-                <button id="void-transaction" class="btn void-btn">Void Transaction</button>
-            </div>
-            <div class="sales-list">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Transaction #</th>
-                            <th>Date</th>
-                            <th>Items</th>
-                            <th>Total (IDR)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sales-list">
-                        <!-- Sales will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <!-- Admin Interface -->
+        <div id="admin-interface" class="admin-container hidden">
+            <header>
+                <h1>Matcha MOAMI - Admin Panel</h1>
+                <button id="back-to-pos" class="btn back-btn">Back to POS</button>
+            </header>
 
-        <div class="tab-content" id="system-tab">
-            <h2>System Management</h2>
-            <div class="system-actions">
-                <button id="reset-system" class="btn warning">Reset System Data</button>
-                <p class="warning-text">Warning: This will delete all sales history and reset products to default</p>
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-tab="products">Products</button>
+                <button class="tab-btn" data-tab="sales">Sales History</button>
+                <button class="tab-btn" data-tab="system">System</button>
+            </div>
+
+            <div class="tab-content active" id="products-tab">
+                <h2>Product Management</h2>
+                <div class="product-management">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Price (IDR)</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-list">
+                            <!-- Products will be loaded here -->
+                        </tbody>
+                    </table>
+                    <button id="add-product" class="btn">Add Product</button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="sales-tab">
+                <h2>Sales History</h2>
+                <div class="sales-filters">
+                    <div class="filter-group">
+                        <label for="date-from">From:</label>
+                        <input type="date" id="date-from">
+                    </div>
+                    <div class="filter-group">
+                        <label for="date-to">To:</label>
+                        <input type="date" id="date-to">
+                    </div>
+                    <div class="filter-group">
+                        <label for="product-filter">Product:</label>
+                        <select id="product-filter">
+                            <option value="all">All Products</option>
+                            <!-- Product options will be added here -->
+                        </select>
+                    </div>
+                    <button id="apply-filters" class="btn">Apply Filters</button>
+                    <button id="reset-filters" class="btn">Reset</button>
+                    <button id="export-sales" class="btn export-btn">Export Sales History</button>
+                    <button id="void-transaction" class="btn void-btn">Void Transaction</button>
+                </div>
+                <div class="sales-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Transaction #</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total (IDR)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-list">
+                            <!-- Sales will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="system-tab">
+                <h2>System Management</h2>
+                <div class="system-actions">
+                    <button id="reset-system" class="btn warning">Reset System Data</button>
+                    <p class="warning-text">Warning: This will delete all sales history and reset products to default</p>
+                </div>
             </div>
         </div>
     </div>
@@ -540,6 +602,61 @@
     </div>
 
     <script>
+        // ==================== LOGIN SYSTEM ====================
+        
+        // User credentials (for demo - in production, use server-side authentication)
+        const users = [
+            { username: "cashier", password: "cashier123", role: "cashier" },
+            { username: "manager", password: "manager123", role: "manager" },
+            { username: "admin", password: "admin123", role: "admin" }
+        ];
+        
+        // Current user
+        let currentUser = null;
+        
+        // DOM Elements
+        const loginInterface = document.getElementById('login-interface');
+        const appInterface = document.getElementById('app-interface');
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+        const adminBtn = document.getElementById('admin-btn');
+        
+        // Login function
+        function login(username, password) {
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                loginError.textContent = '';
+                
+                // Hide login, show app
+                loginInterface.classList.add('hidden');
+                appInterface.classList.remove('hidden');
+                
+                // Show/hide admin button based on role
+                if (user.role === 'cashier') {
+                    adminBtn.classList.add('hidden');
+                } else {
+                    adminBtn.classList.remove('hidden');
+                }
+                
+                // Initialize the POS
+                init();
+                return true;
+            } else {
+                loginError.textContent = 'Invalid username or password';
+                return false;
+            }
+        }
+        
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            login(username, password);
+        });
+
         // ==================== POS FUNCTIONALITY ====================
 
         // Product Data
@@ -577,7 +694,6 @@
         const cartItems = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
         const checkoutBtn = document.getElementById('checkout-btn');
-        const adminBtn = document.getElementById('admin-btn');
         const receiptModal = document.getElementById('receipt-modal');
         const receiptContent = document.getElementById('receipt-content');
         const printReceiptBtn = document.getElementById('print-receipt');
@@ -589,6 +705,10 @@
 
         // Initialize the POS
         function init() {
+            // Hide admin panel by default
+            adminInterface.classList.add('hidden');
+            posInterface.classList.remove('hidden');
+            
             displayProducts();
             updateCart();
             updateDateTime();
@@ -599,9 +719,13 @@
             // Event Listeners
             checkoutBtn.addEventListener('click', checkout);
             adminBtn.addEventListener('click', () => {
-                posInterface.classList.add('hidden');
-                adminInterface.classList.remove('hidden');
-                initAdmin();
+                if (currentUser && (currentUser.role === 'manager' || currentUser.role === 'admin')) {
+                    posInterface.classList.add('hidden');
+                    adminInterface.classList.remove('hidden');
+                    initAdmin();
+                } else {
+                    alert('You do not have permission to access the admin panel');
+                }
             });
             printReceiptBtn.addEventListener('click', printReceipt);
             
@@ -1256,9 +1380,6 @@
                 }
             }
         }
-
-        // Initialize the app
-        init();
     </script>
 </body>
 </html>
